@@ -1,0 +1,24 @@
+﻿<html>
+
+  <head>
+    <meta charset="UTF-8">
+    <title>404页面</title>
+  </head>
+
+  <body style="background:rgb(19,95,114)">
+
+    <p style="font-size:30px;color:white">您想找的页面被吃了！将在 <span id="totalSecond">5</span> 秒后跳回主页！</p>
+    <script language="javascript" type="text/javascript">
+      var second = totalSecond.innerText;
+      setInterval("redirect()", 1000);
+
+      function redirect() {
+        totalSecond.innerText = --second;
+        if (second < 0) location.href = 'index.html';
+      }
+
+    </script>
+
+  </body>
+
+</html>
