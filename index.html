@@ -1,0 +1,186 @@
+﻿<!-- Learn about this code on MDN: https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API/Tutorial/Basic_usage -->
+
+<html>
+  <head>
+  
+  <meta charset="UTF-8">
+  <title>Pixel Painter by Yilun</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  
+  <style>
+#header {
+    background-color:black;
+    color:white;
+    text-align:center;
+    padding:5px;
+}
+#nav {
+    line-height:5px;
+    background-color:rgb(50,50,50);
+    height:400px;
+    width:200px;
+    float:right;
+    padding:5px; 
+}
+#section {
+    width:350px;
+    float:left;
+    padding:10px; 
+}
+#footer {
+    background-color:black;
+    color:white;
+    clear:both;
+    text-align:center;
+    padding:5px; 
+}
+</style>
+  
+  		<style type="text/css">
+			body{
+				cursor: default;
+  margin: 0;
+	padding: 0;
+  text-align: topleft;
+  background: gray;
+			}
+      </style>
+ 
+  <script type="application/javascript">
+  
+  var canvasWidthPx = 10;
+   var canvasHeightPx = 10;
+   
+   function setCanvasSize(x, y) {
+   		canvasWidthPx = x;
+   		canvasHeightPx = y;
+      var canvas = document.getElementById("canvas");
+      canvas.width = x * 20;
+      canvas.height = y * 20;
+   		draw();
+   }
+   
+		/* function clearCanvas()  
+		    {  
+		        var canvas = document.getElementById("canvas");
+		        var cxt=document.getElementById("canvas").getContext("2d");
+		        cxt.clearRect(0,0, canvas.width,canvas.height);
+		        draw();
+		    } */  
+   
+    function draw() {
+   
+      var canvas = document.getElementById("canvas");
+      canvas.style.top=0;
+      canvas.style.left=0;
+      //alert(canvas.style.top);
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+
+				
+				for(var x = 0; x< canvasWidthPx; x++){
+        	for(var y = 0; y< canvasHeightPx; y++){
+          
+          if((x + y) % 2 == 1){
+            ctx.fillStyle="rgb(225, 225, 225)";
+            ctx.fillRect(x * 20 + 0.5, y * 20 + 0.5, 19, 19);
+          }
+                    
+          if((x + y) % 2 == 0){
+            ctx.fillStyle="rgb(150, 150, 150)";
+            ctx.fillRect(x * 20 + 0.5, y * 20 + 0.5, 19, 19);}
+        	}
+        }
+      }
+    }
+
+  </script>
+  
+ </head>
+ 
+ <body onload="draw();">
+ 
+ 
+   <script>
+   
+   
+   document.onclick = function getMousePos(event) {
+    var e = event || window.event;
+    var scrollX = document.documentElement.scrollLeft || document.body.scrollLeft;
+    var scrollY = document.documentElement.scrollTop || document.body.scrollTop;
+    var x = e.pageX || e.clientX + scrollX || e.changedTouches[0].clientX;
+    var y = e.pageY || e.clientY + scrollY || e.changedTouches[0].clientY;
+    var xStart = Math.floor(x / 20) * 20;
+    var yStart = Math.floor(y / 20) * 20;
+    
+    var canvas = document.getElementById("canvas");
+      if (canvas.getContext) {
+        var ctx = canvas.getContext("2d");
+    		ctx.fillStyle=document.getElementById('colorpicker').value;
+    		ctx.fillRect(xStart + 0.5, yStart + 0.5, 19, 19);
+        }
+    //alert('x: ' + x + '\ny: ' + y);
+}
+
+function to_image(){
+                var canvas = document.getElementById("canvas"); 
+    						var dataURL = canvas.toDataURL("image/jpeg", 1.0);
+    						downloadImage(dataURL, 'my-canvas.jpeg');
+}
+            
+function downloadImage(data, filename = 'untitled.jpeg') {
+    var a = document.createElement('a');
+    a.href = data;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+}
+
+
+
+   </script>
+   
+   
+   
+   
+   <canvas id="canvas" width="600" height="400"></canvas>
+   
+   
+   
+   <div id="nav">
+     <img id="MyPix" src="" alt="">
+    <p style="color:rgb(200,200,200);font-size:20px">Color Picker</p>
+    <input 
+    type="color" id="colorpicker" name="colorpicker"
+           value="#e66465">
+    
+    <br><br><br>
+    <div class="input-group">
+      <span class="input-group-addon" style="color:rgb(200,200,200);font-size:20px">X:</span>
+      <input id="canvasXset" type="text" class="form-control" style="color:rgb(200,200,200);font-size:20px" placeholder="10" value="15">
+      <span class="input-group-addon" style="color:rgb(200,200,200);font-size:20px">px</span>
+    </div>
+    <br>
+    <div class="input-group">
+      <span class="input-group-addon" style="color:rgb(200,200,200);font-size:20px">Y:</span>
+      <input id="canvasYset" type="text" class="form-control" style="color:rgb(200,200,200);font-size:20px" placeholder="10" value="15">
+      <span class="input-group-addon" style="color:rgb(200,200,200);font-size:20px">px</span>
+    </div>
+    <br>
+    <button class="btn btn-block btn-info" onclick="setCanvasSize(document.getElementById('canvasXset').value, document.getElementById('canvasYset').value);">Reset Canvas</button>  
+    <br>
+    <button class="btn btn-block btn-info" onclick="to_image();">Save as Image</button>        
+    
+    
+    
+    <br>
+             
+    
+<p style="color:rgb(200,200,200);font-size:10px">0.1.1b</p>
+
+</div>
+   
+   
+ </body>
+ 
+</html>
